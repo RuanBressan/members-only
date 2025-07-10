@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Members Only" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Members Only</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+    <header class="bg-indigo-700 text-white py-4 shadow">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Clube Secreto</h1>
+        <nav class="space-x-4">
+          <% if user_signed_in? %>
+            <%= link_to "Novo Post", new_post_path, class: "hover:underline" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "hover:underline bg-transparent text-white" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "hover:underline" %>
+            <%= link_to "Cadastre-se", new_user_registration_path, class: "hover:underline" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <%= yield %>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4">
+      Projeto feito no The Odin Project
+    </footer>
   </body>
 </html>
